@@ -1,4 +1,6 @@
 import random
+import datetime
+import ast
 
 def NoneNode():
     return None
@@ -25,13 +27,16 @@ class Statement(Node):
         # Get all 'needs' nodes off the class
         cls = self.__class__
 
+        if not hasattr(self, "explication"):
+            self.explication = random.choice(self.explications)
+
         self.dependencies = { k:v.node_type() for k, v in cls.__dict__.items() if isinstance(v, Needs) }
         for k,v in self.dependencies.items():
             setattr(self, k, v)
 
-    def answer(self):
-        pass
-
+    def sentence(self):
+        phrase = str(self)
+        return phrase[0].upper() + phrase[1:] + "."
 
 """
 
@@ -153,7 +158,7 @@ class ListIDExpression(Expression):
     def code(self):
         return self.name
 
-    explication = "the list named '{name}'"
+    explication = "a list named '{name}'"
 
 class ListAccessExpression(Expression):
     lname = Needs(ListIDExpression)
@@ -282,7 +287,8 @@ class ForStatement(Statement):
     iterable = Needs(ListIDExpression, IntListExpression)
     action = Needs(PrintStatement, AssignmentStatement, IfStatement)
 
-    explication = "Iterate over {iterable} with the {var}. Each time, {action}"
+    explications = ["Loop over {iterable} with the {var}. Each time, {action}",
+                    "Iterate over {iterable} with the {var}. Each time, {action}"]
 
     def code(self, tabs=0):
         prefix = "    "*tabs
@@ -297,11 +303,17 @@ def sentence(statement):
     return statement[0].upper() + statement[1:] + "."
 
 def generate(seed = None):
-    # Choose a statement
+    if seed:
+        random.seed(seed)
+    
+    # Choose a statement to generate
     subs = Statement.__subclasses__()
-    new = random.choice(subs)()
-    print sentence(str(new))
-    print new.code()
+    stmt = random.choice(subs)()
+
+    return stmt
 
 if __name__ == "__main__":
-    generate()
+    x = generate()
+    print x.sentence()
+    print ""
+    print x.code()
