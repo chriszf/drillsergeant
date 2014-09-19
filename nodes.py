@@ -64,7 +64,7 @@ class IntExpression(Expression):
         self.number = random.randint(0, 100)
         self.dependencies["number"] = self.number
 
-    explication = "the integer {number}"
+    explication = "the number {number}"
 
     def code(self):
         return "%d"%self.number
@@ -245,7 +245,7 @@ class AssignmentStatement(Statement):
 class PrintStatement(Statement):
     to_print = Needs(IDExpression, IntExpression, FloatExpression, IntListExpression, SimpleArithmeticExpression, StringExpression,
                      ListAccessExpression)
-    explication = "print {to_print}"
+    explication = "print({to_print})"
     def code(self, tabs = 0):
         if tabs:
             prefix = "    "
@@ -261,7 +261,7 @@ class IfStatement(Statement):
     alt = Needs(AssignmentStatement, PrintStatement, NoneNode)
 
     expl_if = "if {cond}, then {truth}"
-    expl_ifelse = "if {cond}, then {truth}. Otherwise, {alt}"
+    expl_ifelse = "if {cond}, then {truth}.\nOtherwise, {alt}"
 
     explication = "if {cond}, then {truth}"
 
@@ -287,8 +287,8 @@ class ForStatement(Statement):
     iterable = Needs(ListIDExpression, IntListExpression)
     action = Needs(PrintStatement, AssignmentStatement, IfStatement)
 
-    explications = ["Loop over {iterable} with the {var}. Each time, {action}",
-                    "Iterate over {iterable} with the {var}. Each time, {action}"]
+    explications = ["Loop over {iterable} with the {var}.\nEach time, {action}",
+                    "Iterate over {iterable} with the {var}.\nEach time, {action}"]
 
     def code(self, tabs=0):
         prefix = "    "*tabs

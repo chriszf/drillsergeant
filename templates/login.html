@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+       
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        input {
+            margin-bottom: 20px;
+        }
+        
+        form {
+            width: 500px;
+        }
+
+        button#continue {
+            width: 200px;
+        }
+
+        div#explanation {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            width: 600px;
+        }
+
+        div#explanation div {
+            margin-bottom: 15px;
+        }
+
+        span.so-important {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <h2 class="form-signin-heading">Looks like you're new here.</h2>
+      <div id="explanation">
+          <h4>Welcome to the Hackbright Python Drill System.</h4>
+          <div>
+              This system is designed to help you practice Python syntax and get familiar with programming terminology.
+          </div>
+          <div> You will be presented with a statement in English directing you to write a small snippet of code, just a handful of lines. Write your code in the editor (pay attention to the highlighting system, it's meant to help you).</div>
+          <div>Our system will check your code against ours and provide you with our solution, then give you the opportunity to do another problem. <span class="so-important">It's important to understand that the code you will be asked to write does not do anything useful</span>. The point of these drills are to improve your fluency with Python idioms, not to show you how those idioms are used to do useful work.</div> 
+          <div>Links to reference material are provided on the right. These link back to the ThinkPython online book.</div>
+          <div>It's recommended that you do 10 drills a day, but we won't stop you if you're having fun.</div>
+      </div>
+
+      <form class="form-signin" role="form" method="POST">
+        <input type="text" name="email" class="form-control" placeholder="When you're ready, enter your name and click continue." required autofocus>
+        <button id="continue" class="btn btn-lg btn-primary btn-block" type="submit">Continue</button>
+      </form>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
+

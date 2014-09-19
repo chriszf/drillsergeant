@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Hackbright Drill Sergeant</title>
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/default.min.css">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<style type="text/css" media="screen">
+    #header {
+        margin-bottom: 20px;
+    }
+    #editor { 
+        width: 100%;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+    #solution {
+        margin-bottom: 20px;
+        display: none;
+        
+    }
+
+    ul {
+        margin-top: 10px;
+    }
+
+    /* Side notes for calling out things
+    -------------------------------------------------- */
+     
+    /* Base styles (regardless of theme) */
+    .bs-callout {
+      margin: 20px 0;
+      padding: 15px 30px 15px 15px;
+      border-left: 5px solid #eee;
+    }
+    .bs-callout h4 {
+      margin-top: 0;
+    }
+    .bs-callout p:last-child {
+      margin-bottom: 0;
+    }
+    .bs-callout code,
+    .bs-callout .highlight {
+      background-color: #fff;
+    }
+     
+    /* Themes for different contexts */
+    .bs-callout-danger {
+      background-color: #fcf2f2;
+      border-color: #dFb5b4;
+    }
+    .bs-callout-warning {
+      background-color: #fefbed;
+      border-color: #f1e7bc;
+    }
+    .bs-callout-info {
+      background-color: #f0f7fd;
+      border-color: #d0e3f0;
+    }
+
+    #syntax-error {
+        display: None;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="col-md-12" id="header">
+            <h1>Hackbright Python Drills</h1>
+            You have done {{num_solved}} of 10 drills today.
+        </div>
+        <div class="col-md-9">
+            <div id="prompt" class="well"><div class="h4">Translate this sentence into code:</div>{{problem.prompt}}</div>
+            <div id="editor">{% if problem.solution %}{{problem.solution}}{% endif %}</div>
+            <div id="syntax-error" class="bs-callout bs-callout-warning">It seems there are some errors in your code. Don't fret about it too much! Compare your solution to the one given below, try to find out what's wrong, and move on to the next problem.</div>
+            <div>
+                <a href="" id="submit" class="btn btn-success">Submit</a>
+            </div>
+            <div id="solution">
+                <h3>Solution</h3>
+                <pre><code class="python">{{problem.answer_key}}</code></pre>
+                <a href="/next" id="continue" class="btn btn-success">Continue</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h4>Resources</h4>
+            <div>Here are a few reference links to help you through these drills.</div>
+            <ul>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/SimplePythonData/intro-VariablesExpressionsandStatements.html">Variables</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/SimplePythonData/Variables.html">Assignment</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/SimplePythonData/Variables.html">Data types: numbers and strings</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/SimplePythonData/Variables.html">Data types: True and False</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/PythonTurtle/TheforLoop.html">For loops</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/MoreAboutIteration/Theforlooprevisited.html">More for loops</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/Selection/ConditionalExecutionBinarySelection.html">If/Else statements</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/Selection/OmittingtheelseClauseUnarySelection.html">If statements</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/SimplePythonData/OperatorsandOperands.html">Arithmetic operators</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/Lists/intro-Lists.html">Lists</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/Lists/ListValues.html">Making lists</a></li>
+                <li><a href="http://interactivepython.org/runestone/static/thinkcspy/Lists/AccessingElements.html">List access</a></li>
+            </ul>
+        </div>
+    </div>
+    
+<script src="/static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+function displayResult(data) {
+    if (data['result'] === false) {
+        $("#syntax-error").slideDown()
+    }
+}
+
+function submitAndShowSolution() {
+    $("div#solution").slideDown();
+    $("a#submit").addClass("disabled");
+    $.post("/solve/{{problem.id}}", {solution: editor.getValue()}, displayResult, "json");
+    return false;
+};
+
+var editor;
+
+$(function() {
+    editor = ace.edit("editor");
+    editor.setTheme("ace/theme/dawn");
+    editor.getSession().setMode("ace/mode/python");
+    hljs.initHighlightingOnLoad();
+
+    $("a#submit").click(submitAndShowSolution);
+});
+</script>
+</body>
+</html>
